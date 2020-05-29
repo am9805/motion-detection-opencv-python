@@ -26,6 +26,7 @@ while cap.isOpened():
     _, thresh = cv2.threshold(blur, 20, 255, cv2.THRESH_BINARY)
     dilated = cv2.dilate(thresh, None, iterations=3)
     contours, _ = cv2.findContours(dilated, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    person_counter = 0
     for contours in contours:
         (x, y, width, height) = cv2.boundingRect(contours)
 
@@ -35,6 +36,7 @@ while cap.isOpened():
         # no vamos a dibujar un rectangulo, si no, si
         if cv2.contourArea(contours) < 1000:
             continue
+        person_counter += 1
 
         M = cv2.moments(contours)
         if (M["m00"] == 0): M["m00"] = 1
@@ -51,14 +53,14 @@ while cap.isOpened():
         # cv2.drawContours(frame1, [nuevoContorno], 0, (255,0,0), 3) #Drawing the found contours
 
         cv2.rectangle(frame1, (x, y), (x + width, y + height), (255, 0, 0))
-        cv2.putText(frame1, "Estado:{}".format("Movimiento"), (10, 20),
+        cv2.putText(frame1, "Estado: {}".format("Movimiento"), (10, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 218, 51), 3)
-        # cv2.putText(frame1, str(personsCounter), (10,60),
-        #             cv2.FONT_HERSHEY_SIMPLEX, 1,(255, 218, 51), 3 )
+    cv2.putText(frame1, "Personas: {}".format(str(person_counter)), (10, 60),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 218, 51), 2)
 
     # cv2.drawContours(frame1, contours, -1, (0,255,0), 2)
-    cv2.imshow('blur', blur)
-    cv2.imshow('thresh', thresh)
+    #cv2.imshow('blur', blur)
+    #cv2.imshow('thresh', thresh)
     cv2.imshow('Video', frame1)
 
     frame1 = frame2
