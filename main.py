@@ -33,7 +33,7 @@ while cap.isOpened():
     diff = cv2.absdiff(frame1, frame2) 
     # Pasamos el resultado a escala de grises
     gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
-    # Cuando ovbtenemos la diferencia ene scala de grises, aplicamos un blur Gaussiano
+    # Cuando obtenemos la diferencia en escala de grises, aplicamos un blur Gaussiano
     # para suavizar las diferencias y poder notar únicamente las más abruptas
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     # Creamos un límite con los resultados del blur
